@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIM Database - Pakistan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px #00fffb, 0 0 10px #00fffb, 0 0 15px #00fffb; }
+            50% { text-shadow: 0 0 10px #00fffb, 0 0 20px #00fffb, 0 0 25px #00fffb; }
+            100% { text-shadow: 0 0 5px #00fffb, 0 0 10px #00fffb, 0 0 15px #00fffb; }
+        }
+        
+        .glow-text {
+            animation: glow 2s infinite;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+        
+        .search-box {
+            box-shadow: 0 0 20px rgba(0, 255, 251, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .search-box:focus-within {
+            box-shadow: 0 0 30px rgba(0, 255, 251, 0.5);
+        }
+        
+        .result-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 255, 251, 0.2);
+        }
+        
+        .info-icon {
+            margin-right: 8px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .social-btn {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+        
+        .social-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .whatsapp-group {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+        }
+        
+        .whatsapp-channel {
+            background: linear-gradient(135deg, #075E54 0%, #128C7E 100%);
+        }
+        
+        .telegram {
+            background: linear-gradient(135deg, #0088cc 0%, #005580 100%);
+        }
+    </style>
+</head>
+<body class="flex flex-col">
+    <div class="container mx-auto px-4 py-8 flex-grow">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold mb-2 glow-text">SIM Database Pakistan</h1>
+            <p class="text-lg text-gray-300">Check SIM owner details instantly</p>
+        </header>
+        
+        <main class="max-w-2xl mx-auto">
+            <div class="search-box bg-gray-800 rounded-lg p-6 mb-8">
+                <div class="flex items-center">
+                    <div class="relative flex-grow">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-blue-400"></i>
+                        </div>
+                        <input 
+                            type="text" 
+                            id="numberInput" 
+                            class="block w-full pl-10 pr-12 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                            placeholder="Enter mobile number (03XXXXXXXXX)" 
+                            maxlength="11"
+                            inputmode="numeric"
+                        >
+                    </div>
+                    <button 
+                        id="searchBtn" 
+                        class="ml-4 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-300 flex items-center"
+                    >
+                        <i class="fas fa-search mr-2"></i> Search
+                    </button>
+                </div>
+            </div>
+            
+            <div id="loading" class="hidden text-center py-8">
+                <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
+                <p class="text-blue-400">Searching database...</p>
+            </div>
+            
+            <div id="errorContainer" class="hidden bg-red-900/50 border border-red-700 rounded-lg p-4 mb-8 text-center">
+                <i class="fas fa-exclamation-triangle text-red-400 mr-2"></i>
+                <span id="errorMessage" class="text-white">Error message here</span>
+            </div>
+            
+            <div id="resultContainer" class="hidden result-card rounded-lg p-6 mb-8">
+                <h2 class="text-xl font-semibold mb-4 text-blue-400">SIM Information</h2>
+                <div id="responseBox" class="space-y-3">
+                    <!-- Results will be displayed here -->
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <a href="https://chat.whatsapp.com/LoafyPWMGOv88oElxdwOB8" target="_blank" class="social-btn whatsapp-group rounded-lg p-4 text-white text-center flex flex-col items-center justify-center">
+                    <i class="fab fa-whatsapp text-3xl mb-2"></i>
+                    <span class="font-semibold">WhatsApp Group</span>
+                    <span class="text-xs opacity-80 mt-1">Join our community</span>
+                </a>
+                
+                <a href="https://whatsapp.com/channel/0029Vb5j7KKBVJl1T9RTk80p" target="_blank" class="social-btn whatsapp-channel rounded-lg p-4 text-white text-center flex flex-col items-center justify-center">
+                    <i class="fab fa-whatsapp text-3xl mb-2"></i>
+                    <span class="font-semibold">WhatsApp Channel</span>
+                    <span class="text-xs opacity-80 mt-1">Official updates</span>
+                </a>
+                
+                <a href="https://t.me/Tips0Courses" target="_blank" class="social-btn telegram rounded-lg p-4 text-white text-center flex flex-col items-center justify-center">
+                    <i class="fab fa-telegram text-3xl mb-2"></i>
+                    <span class="font-semibold">Telegram</span>
+                    <span class="text-xs opacity-80 mt-1">Join our channel</span>
+                </a>
+            </div>
+        </main>
+    </div>
+    
+    <footer class="bg-gray-900/50 py-4 text-center">
+        <p class="text-gray-400">Android Interface of Web</p>
+        <p class="text-blue-400 font-medium">Developed by <span class="glow-text">Ramzan Ahsan</span></p>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const numberInput = document.getElementById('numberInput');
+            const searchBtn = document.getElementById('searchBtn');
+            const resultContainer = document.getElementById('resultContainer');
+            const responseBox = document.getElementById('responseBox');
+            const errorContainer = document.getElementById('errorContainer');
+            const loading = document.getElementById('loading');
+            
+            // Format number input to ensure 11 digits starting with 03
+            numberInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                
+                // Ensure it starts with 03
+                if (value.length > 0 && !value.startsWith('03')) {
+                    value = '03' + value.substring(2);
+                }
+                
+                // Limit to 11 characters
+                e.target.value = value.substring(0, 11);
+            });
+            
+            // Search function
+            searchBtn.addEventListener('click', function() {
+                const number = numberInput.value.trim();
+                
+                if (number.length !== 11 || !number.startsWith('03')) {
+                    showError('Please enter a valid 11-digit mobile number starting with 03');
+                    return;
+                }
+                
+                fetchData(number);
+            });
+            
+            // Also trigger search on Enter key
+            numberInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchBtn.click();
+                }
+            });
+            
+            async function fetchData(number) {
+                // Show loading
+                resultContainer.classList.add('hidden');
+                errorContainer.classList.add('hidden');
+                loading.classList.remove('hidden');
+                
+                const url = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://fam-official.serv00.net/sim/api.php?num=${number}`)}`;
+                
+                try {
+                    const res = await fetch(url);
+                    const json = await res.json();
+                    const apiData = JSON.parse(json.contents);
+                    
+                    loading.classList.add('hidden');
+                    
+                    if (apiData.status === "success" && Array.isArray(apiData.data) && apiData.data.length > 0) {
+                        const user = apiData.data[0];
+                        
+                        // Format the response with icons
+                        responseBox.innerHTML = `
+                            <div class="flex items-center">
+                                <span class="info-icon">📞</span>
+                                <span><strong>Mobile:</strong> ${user.Mobile || "Not found"}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="info-icon">👤</span>
+                                <span><strong>Name:</strong> ${user.Name || "Not found"}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="info-icon">🆔</span>
+                                <span><strong>CNIC:</strong> ${user.CNIC || "Not found"}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="info-icon">📍</span>
+                                <span><strong>Address:</strong> ${user.Address || "Not found"}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="info-icon">📶</span>
+                                <span><strong>Operator:</strong> ${user.Operator || "Not found"}</span>
+                            </div>
+                        `;
+                        
+                        resultContainer.classList.remove('hidden');
+                    } else {
+                        responseBox.innerHTML = `<p class="text-yellow-400 text-center">Data Not Found</p>`;
+                        resultContainer.classList.remove('hidden');
+                    }
+                } catch (error) {
+                    loading.classList.add('hidden');
+                    showError('Failed to fetch data. Please try again later.');
+                    console.error('Error:', error);
+                }
+            }
+            
+            function showError(message) {
+                errorContainer.classList.remove('hidden');
+                document.getElementById('errorMessage').textContent = message;
+            }
+        });
+    </script>
+<p style="border-radius: 8px; text-align: center; font-size: 12px; color: #fff; margin-top: 16px;position: fixed; left: 8px; bottom: 8px; z-index: 10; background: rgba(0, 0, 0, 0.8); padding: 4px 8px;">Made with <img src="https://enzostvs-deepsite.hf.space/logo.svg" alt="DeepSite Logo" style="width: 16px; height: 16px; vertical-align: middle;display:inline-block;margin-right:3px;filter:brightness(0) invert(1);"><a href="https://enzostvs-deepsite.hf.space" style="color: #fff;text-decoration: underline;" target="_blank" >DeepSite</a> - 🧬 <a href="https://enzostvs-deepsite.hf.space?remix=Ramzan5566/sim" style="color: #fff;text-decoration: underline;" target="_blank" >Remix</a></p></body>
+</html>
